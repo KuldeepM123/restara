@@ -1,50 +1,32 @@
-import React, { ReactNode, useState } from 'react';
+import React, { ReactNode } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import Slider from '@react-native-community/slider';
 
 interface SliderProps {
-  data?: object;
-  style?: object;
   label?: string;
-  icon?: string | ReactNode;
+  icon?: ReactNode;
   value?: number;
   onValueChange: (value: number) => void;
-  song?: string;
 }
 
-const CustomSlider = ({
-  data,
-  style,
-  label,
-  icon,
-  value,
-  onValueChange,
-  song,
-}: SliderProps) => {
+const CustomSlider = ({ label, icon, value, onValueChange }: SliderProps) => {
   return (
     <View style={styles.container}>
+      <View style={styles.sliderWrapper}>
+        <Slider
+          style={styles.slider}
+          onValueChange={onValueChange}
+          value={value || 0}
+          minimumValue={0}
+          maximumValue={1}
+          minimumTrackTintColor={'#8B7CB6'}
+          maximumTrackTintColor={'#E0E0E0'}
+          // thumbStyle={styles.thumb}
+          // trackStyle={styles.track}
+        />
+      </View>
       <View style={styles.header}>
         {icon && <View style={styles.icon}>{icon}</View>}
-        <Text style={styles.label}>{label}</Text>
-        {song && <Text style={styles.song}>{song}</Text>}
-      </View>
-      <View
-        style={{
-          width: '100%',
-          height: 20,
-          borderRadius: 6,
-          backgroundColor: '#ddd',
-        }}
-      >
-        <Slider
-          style={{ width: '100%', height: 20 }}
-          onValueChange={onValueChange}
-          value={value}
-          minimumValue={0}
-          maximumValue={15}
-          minimumTrackTintColor={'#123456'}
-          maximumTrackTintColor={'#654321'}
-        />
       </View>
     </View>
   );
@@ -52,32 +34,49 @@ const CustomSlider = ({
 
 const styles = StyleSheet.create({
   container: {
-    marginVertical: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
+    paddingVertical: 5,
   },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 8,
+    // marginBottom: 12,
   },
   icon: {
-    marginRight: 8,
+    // marginRight: 12,
   },
   label: {
     fontSize: 16,
-    fontWeight: '500',
-    flex: 1,
+    fontWeight: '600',
     color: '#333',
+    flex: 1,
   },
-  song: {
-    fontSize: 14,
-    color: '#666',
+  sliderWrapper: {
+    width: '100%',
+    height: 40,
+    justifyContent: 'center',
+    // paddingHorizontal: 5,
   },
   slider: {
     width: '100%',
     height: 40,
-    borderRadius: 8,
-    paddingHorizontal: 10,
-    backgroundColor: '#fff',
+  },
+  thumb: {
+    backgroundColor: '#8B7CB6',
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3,
+    elevation: 5,
+  },
+  track: {
+    height: 6,
+    borderRadius: 3,
   },
 });
 
