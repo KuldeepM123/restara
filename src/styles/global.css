@@ -1,0 +1,30 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom components for Restara */
+@layer components {
+  .btn-primary {
+    @apply bg-primary-500 px-4 py-2 rounded-lg text-white font-semibold;
+  }
+
+  .btn-primary:active {
+    @apply bg-primary-600;
+  }
+
+  .sound-card {
+    @apply bg-white rounded-xl p-4 shadow-md border border-gray-200;
+  }
+
+  .mixer-control {
+    @apply bg-gray-100 rounded-full p-3 items-center justify-center;
+  }
+
+  .slider-track {
+    @apply bg-gray-300 rounded-full;
+  }
+
+  .slider-thumb {
+    @apply bg-primary-500 rounded-full;
+  }
+}
