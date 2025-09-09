@@ -68,6 +68,7 @@ export const SoundMixerProvider: React.FC<SoundMixerProviderProps> = ({
   const [volumes, setVolumes] =
     useState<Record<string, number>>(INITIAL_VOLUMES);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [playingStates, setPlayingStates] = useState<Record<string, boolean>>({});
   const [isLoading, setIsLoading] = useState(true);
 
   // Create sound items from SliderData
@@ -138,11 +139,15 @@ export const SoundMixerProvider: React.FC<SoundMixerProviderProps> = ({
         sound.setNumberOfLoops(-1);
         sound.play(success => {
           console.log(`Play result for ${soundId}:`, success);
+          if (success) {
+            setPlayingStates(prev => ({ ...prev, [soundId]: true }));
+          }
         });
         setIsPlaying(true);
       } else {
         console.log(`Stopping ${soundId}`);
         sound.stop();
+        setPlayingStates(prev => ({ ...prev, [soundId]: false }));
       }
     } else {
       console.log(`No sound object found for ${soundId}`);
@@ -160,8 +165,8 @@ export const SoundMixerProvider: React.FC<SoundMixerProviderProps> = ({
   // getIconForSound - Fixed version
   const getIconForSound = (soundId: string) => {
     const soundItem = soundItems.find(item => item.key === soundId);
-    const hasVolume = volumes[soundId] > 0;
-    return hasVolume ? soundItem?.gif : soundItem?.png;
+    const isCurrentlyPlaying = playingStates[soundId] && volumes[soundId] > 0;
+    return isCurrentlyPlaying ? soundItem?.gif : soundItem?.png;
   };
 
   // Play a specific sound
@@ -192,14 +197,21 @@ export const SoundMixerProvider: React.FC<SoundMixerProviderProps> = ({
         }
       });
       setIsPlaying(false);
+      setPlayingStates({});
     } else {
       // Play all sounds that have volume > 0
+      const newPlayingStates: Record<string, boolean> = {};
       Object.entries(sounds.current).forEach(([key, sound]) => {
         if (sound && volumes[key] > 0) {
           sound.setNumberOfLoops(-1);
-          sound.play();
+          sound.play(success => {
+            if (success) {
+              newPlayingStates[key] = true;
+            }
+          });
         }
       });
+      setPlayingStates(newPlayingStates);
       setIsPlaying(true);
     }
   };
@@ -216,6 +228,7 @@ export const SoundMixerProvider: React.FC<SoundMixerProviderProps> = ({
     });
 
     setIsPlaying(false);
+    setPlayingStates({});
   };
 
   const contextValue: SoundMixerContextType = {

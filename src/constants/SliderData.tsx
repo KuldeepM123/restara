@@ -7,6 +7,13 @@ export const SliderData = [
     gif: require('../assets/images/bell.gif'),
     sound: require('../assets/sounds/bell.mp3'),
   },
+  // {
+  //   id: 'flower',
+  //   label: 'Flower',
+  //   png: require('../assets/images/flower.png'),
+  //   gif: require('../assets/images/flower.gif'),
+  //   sound: require('../assets/sounds/flower.mp3'),
+  // },
   {
     id: 'bird',
     label: 'Bird',

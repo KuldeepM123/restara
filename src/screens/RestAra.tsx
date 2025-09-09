@@ -153,7 +153,7 @@ const RestAraApp = () => {
           <View style={styles.countdownRow}>
             <Text style={styles.label}>Set Timer</Text>
             <View style={styles.optionsRow}>
-              {[1, 30, 60, 90, 120].map(min => (
+              {[30, 60, 90, 120].map(min => (
                 <TouchableOpacity
                   key={min}
                   style={styles.circleButton}
@@ -213,25 +213,15 @@ const RestAraApp = () => {
               <View style={styles.sliderContainer}>
                 <CustomSlider
                   label={item.label}
-                  // data={SliderData}
-                  // style={styles.slider}
-                  // minimumValue={0}
-                  // maximumValue={1}
                   value={volumes[item.key]}
-                  // }
-                  // minimumTrackTintColor="#ffffff"
-                  // maximumTrackTintColor="#cccccc"
-                  // thumbStyle={styles.sliderThumb}
-                  // trackStyle={styles.sliderTrack}
-                  // disabled={!masterEnabled}
                   onValueChange={value => handleVolumeChange(item.key, value)}
-                  icon={
-                    <Image
-                      source={getIconForSound(item.key)}
-                      style={styles.soundIcon}
-                    />
-                  }
                 />
+                <View style={styles.iconContainer}>
+                  <Image
+                    source={getIconForSound(item.key)}
+                    style={styles.soundIcon}
+                  />
+                </View>
               </View>
             </View>
           ))}
@@ -252,10 +242,14 @@ const styles = StyleSheet.create({
   },
 
   scrollContainer: {
+    width: '100%',
     paddingHorizontal: 20,
     paddingVertical: 10,
   },
-
+  iconContainer: {
+    // position: 'absolute',
+    width: '10%',
+  },
   loadingContainer: {
     flex: 1,
     justifyContent: 'center',
