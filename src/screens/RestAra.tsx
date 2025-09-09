@@ -15,6 +15,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import LogoVertical from '../../src/assets/icons/logo-vertical.svg';
 import CustomSlider from '../components/Slider';
 import { SliderData } from '../constants/SliderData';
+import Video from 'react-native-video';
 
 const RestAraApp = () => {
   // Timer state
@@ -129,122 +130,132 @@ const RestAraApp = () => {
   }
 
   return (
-    <SafeAreaProvider style={styles.container}>
-      {/* Header */}
-      <View style={styles.header}>
-        <View style={styles.headerLeft}>
-          <Text style={styles.logo}>{<LogoVertical />}</Text>
-        </View>
-        <View style={styles.headerRight}>
-          <Text style={styles.toggleLabel}>ON</Text>
-          <Switch
-            value={masterEnabled}
-            onValueChange={setMasterEnabled}
-            trackColor={{ false: '#767577', true: '#ff6b6b' }}
-            thumbColor={masterEnabled ? '#ffffff' : '#f4f3f4'}
-            style={styles.masterToggle}
-          />
-        </View>
-      </View>
-
-      {/* Timer Section */}
-      <View style={styles.timerBox}>
-        {!hasTimerStarted ? (
-          <View style={styles.countdownRow}>
-            <Text style={styles.label}>Set Timer</Text>
-            <View style={styles.optionsRow}>
-              {[30, 60, 90, 120].map(min => (
-                <TouchableOpacity
-                  key={min}
-                  style={styles.circleButton}
-                  onPress={() => setTimer(min)}
-                >
-                  <Text style={styles.circleText}>{min}</Text>
-                </TouchableOpacity>
-              ))}
-            </View>
+    <View style={styles.container}>
+      <Video
+        source={require('../assets/videos/background_animation_1.mp4')} // your video url
+        style={StyleSheet.absoluteFill} // makes it cover the whole screen
+        resizeMode="cover"
+        repeat
+        muted
+      />
+      <SafeAreaProvider style={styles.container}>
+        {/* Header */}
+        <View style={styles.header}>
+          <View style={styles.headerLeft}>
+            <Text style={styles.logo}>{<LogoVertical />}</Text>
           </View>
-        ) : (
-          <View style={styles.countdownRow}>
-            <Text style={styles.label}>Countdown</Text>
-            <View style={styles.timeDisplay}>
-              <View style={styles.timeBlock}>
-                <Text style={styles.timeText}>{hrs}</Text>
-                <Text style={styles.subText}>Hours</Text>
-              </View>
-              <Text style={styles.colon}>:</Text>
-              <View style={styles.timeBlock}>
-                <Text style={styles.timeText}>{mins}</Text>
-                <Text style={styles.subText}>Minutes</Text>
-              </View>
-              <Text style={styles.colon}>:</Text>
-              <View style={styles.timeBlock}>
-                <Text style={styles.timeText}>{secs}</Text>
-                <Text style={styles.subText}>Seconds</Text>
-              </View>
-            </View>
-            {/* Controls */}
-            <View style={styles.controls}>
-              <TouchableOpacity
-                disabled={timeLeft === 0} // disable when timer ends
-                onPress={() => setIsTimerRunning(prev => !prev)} // toggle pause/resume
-              >
-                <Text style={styles.controlText}>
-                  {isTimerRunning ? 'Pause' : 'Resume'}
-                </Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity onPress={resetTimer}>
-                <Text style={styles.controlText}>Reset</Text>
-              </TouchableOpacity>
-            </View>
+          <View style={styles.headerRight}>
+            <Text style={styles.toggleLabel}>ON</Text>
+            <Switch
+              value={masterEnabled}
+              onValueChange={setMasterEnabled}
+              trackColor={{ false: '#767577', true: '#ff6b6b' }}
+              thumbColor={masterEnabled ? '#ffffff' : '#f4f3f4'}
+              style={styles.masterToggle}
+            />
           </View>
-        )}
-      </View>
+        </View>
 
-      {/* Sound Controls */}
-      <ScrollView contentContainerStyle={styles.scrollContainer}>
-        <View style={styles.soundsContainer}>
-          {soundItems.map(item => (
-            <View key={item.key} style={styles.soundItem}>
-              <View style={styles.soundHeader}>
-                <Text style={styles.soundLabel}>{item.label}</Text>
+        {/* Timer Section */}
+        <View style={styles.timerBox}>
+          {!hasTimerStarted ? (
+            <View style={styles.countdownRow}>
+              <Text style={styles.label}>Set Timer</Text>
+              <View style={styles.optionsRow}>
+                {[1, 30, 60, 90, 120].map(min => (
+                  <TouchableOpacity
+                    key={min}
+                    style={styles.circleButton}
+                    onPress={() => setTimer(min)}
+                  >
+                    <Text style={styles.circleText}>{min}</Text>
+                  </TouchableOpacity>
+                ))}
               </View>
-              <View style={styles.sliderContainer}>
-                <CustomSlider
-                  label={item.label}
-                  value={volumes[item.key]}
-                  onValueChange={value => handleVolumeChange(item.key, value)}
-                />
-                <View style={styles.iconContainer}>
-                  <Image
-                    source={getIconForSound(item.key)}
-                    style={styles.soundIcon}
-                  />
+            </View>
+          ) : (
+            <View style={styles.countdownRow}>
+              <Text style={styles.label}>Countdown</Text>
+              <View style={styles.timeDisplay}>
+                <View style={styles.timeBlock}>
+                  <Text style={styles.timeText}>{hrs}</Text>
+                  <Text style={styles.subText}>Hours</Text>
+                </View>
+                <Text style={styles.colon}>:</Text>
+                <View style={styles.timeBlock}>
+                  <Text style={styles.timeText}>{mins}</Text>
+                  <Text style={styles.subText}>Minutes</Text>
+                </View>
+                <Text style={styles.colon}>:</Text>
+                <View style={styles.timeBlock}>
+                  <Text style={styles.timeText}>{secs}</Text>
+                  <Text style={styles.subText}>Seconds</Text>
                 </View>
               </View>
+              {/* Controls */}
+              <View style={styles.controls}>
+                <TouchableOpacity
+                  disabled={timeLeft === 0} // disable when timer ends
+                  onPress={() => setIsTimerRunning(prev => !prev)} // toggle pause/resume
+                >
+                  <Text style={styles.controlText}>
+                    {isTimerRunning ? 'Pause' : 'Resume'}
+                  </Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity onPress={resetTimer}>
+                  <Text style={styles.controlText}>Reset</Text>
+                </TouchableOpacity>
+              </View>
             </View>
-          ))}
+          )}
         </View>
-      </ScrollView>
-      {/* Reset Button */}
-      <TouchableOpacity style={styles.resetButton} onPress={handleResetAll}>
-        <Text style={styles.resetButtonText}>RESET</Text>
-      </TouchableOpacity>
-    </SafeAreaProvider>
+
+        {/* Sound Controls */}
+        <ScrollView contentContainerStyle={styles.scrollContainer}>
+          <View style={styles.soundsContainer}>
+            {soundItems.map(item => (
+              <View key={item.key} style={styles.soundItem}>
+                <View style={styles.soundHeader}>
+                  <Text style={styles.soundLabel}>{item.label}</Text>
+                </View>
+                <View style={styles.sliderContainer}>
+                  <CustomSlider
+                    label={item.label}
+                    value={volumes[item.key]}
+                    onValueChange={value => handleVolumeChange(item.key, value)}
+                  />
+                  <View style={styles.iconContainer}>
+                    <Image
+                      source={getIconForSound(item.key)}
+                      style={styles.soundIcon}
+                    />
+                  </View>
+                </View>
+              </View>
+            ))}
+          </View>
+        </ScrollView>
+        {/* Reset Button */}
+        <TouchableOpacity style={styles.resetButton} onPress={handleResetAll}>
+          <Text style={styles.resetButtonText}>RESET</Text>
+        </TouchableOpacity>
+      </SafeAreaProvider>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'purple',
+    // backgroundColor: 'purple',
+    // alignItems: 'center',
   },
 
   scrollContainer: {
     width: '100%',
-    paddingHorizontal: 20,
-    paddingVertical: 10,
+    // paddingHorizontal: 5,
+    // paddingVertical: 10,
   },
   iconContainer: {
     // position: 'absolute',
@@ -298,11 +309,13 @@ const styles = StyleSheet.create({
   },
 
   timerBox: {
+    width: '95%',
     backgroundColor: '#5D4A99',
-    padding: 20,
+    padding: 15,
     borderRadius: 15,
     marginBottom: 20,
     alignItems: 'center',
+    justifyContent: 'center',
   },
 
   label: {
@@ -376,8 +389,9 @@ const styles = StyleSheet.create({
   },
 
   controls: {
+    // backgroundColor: 'red',
     flexDirection: 'row',
-    gap: 20,
+    gap: 10,
     justifyContent: 'center',
   },
 
