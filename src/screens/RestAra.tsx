@@ -8,6 +8,7 @@ import {
   Image,
   Switch,
   ScrollView,
+  Dimensions,
 } from 'react-native';
 import Slider from '@react-native-community/slider';
 import { useSoundMixer } from '../context/CSoundProvider';
@@ -16,6 +17,10 @@ import LogoVertical from '../../src/assets/icons/logo-vertical.svg';
 import CustomSlider from '../components/Slider';
 import { SliderData } from '../constants/SliderData';
 import Video from 'react-native-video';
+import CustomToggleSwitch from '../components/ToggleSwitch';
+
+const { width } = Dimensions.get('screen');
+const scale = width / 375;
 
 const RestAraApp = () => {
   // Timer state
@@ -145,14 +150,15 @@ const RestAraApp = () => {
             <Text style={styles.logo}>{<LogoVertical />}</Text>
           </View>
           <View style={styles.headerRight}>
-            <Text style={styles.toggleLabel}>ON</Text>
+            {/* <Text style={styles.toggleLabel}>ON</Text>
             <Switch
               value={masterEnabled}
               onValueChange={setMasterEnabled}
               trackColor={{ false: '#767577', true: '#ff6b6b' }}
               thumbColor={masterEnabled ? '#ffffff' : '#f4f3f4'}
               style={styles.masterToggle}
-            />
+            /> */}
+            <CustomToggleSwitch />
           </View>
         </View>
 
@@ -162,7 +168,7 @@ const RestAraApp = () => {
             <View style={styles.countdownRow}>
               <Text style={styles.label}>Set Timer</Text>
               <View style={styles.optionsRow}>
-                {[1, 30, 60, 90, 120].map(min => (
+                {[30, 60, 90, 120].map(min => (
                   <TouchableOpacity
                     key={min}
                     style={styles.circleButton}
@@ -237,9 +243,11 @@ const RestAraApp = () => {
           </View>
         </ScrollView>
         {/* Reset Button */}
-        <TouchableOpacity style={styles.resetButton} onPress={handleResetAll}>
-          <Text style={styles.resetButtonText}>RESET</Text>
-        </TouchableOpacity>
+        <View>
+          <TouchableOpacity style={styles.resetButton} onPress={handleResetAll}>
+            <Text style={styles.resetButtonText}>RESET</Text>
+          </TouchableOpacity>
+        </View>
       </SafeAreaProvider>
     </View>
   );
@@ -248,17 +256,12 @@ const RestAraApp = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // backgroundColor: 'purple',
-    // alignItems: 'center',
   },
 
   scrollContainer: {
     width: '100%',
-    // paddingHorizontal: 5,
-    // paddingVertical: 10,
   },
   iconContainer: {
-    // position: 'absolute',
     width: '10%',
   },
   loadingContainer: {
@@ -274,12 +277,21 @@ const styles = StyleSheet.create({
   },
 
   header: {
-    width: '95%',
+    width: '90%',
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    alignSelf: 'center',
+    marginTop: 60,
     marginBottom: 20,
-    paddingTop: 20,
+  },
+
+  label: {
+    color: '#fff',
+    fontWeight: '600',
+    fontSize: 12 * scale,
+    // marginBottom: 15,
+    textAlign: 'center',
   },
 
   headerLeft: {
@@ -288,7 +300,7 @@ const styles = StyleSheet.create({
 
   logo: {
     color: '#ffffff',
-    fontSize: 18,
+    fontSize: 18 * scale,
     fontWeight: 'bold',
   },
 
@@ -299,7 +311,7 @@ const styles = StyleSheet.create({
 
   toggleLabel: {
     color: '#ffffff',
-    fontSize: 16,
+    fontSize: 12 * scale,
     marginRight: 10,
     fontWeight: '500',
   },
@@ -307,56 +319,50 @@ const styles = StyleSheet.create({
   masterToggle: {
     transform: [{ scaleX: 1.2 }, { scaleY: 1.2 }],
   },
-
   timerBox: {
-    width: '95%',
-    backgroundColor: '#5D4A99',
+    width: '90%',
     padding: 15,
+    alignSelf: 'center',
+    borderColor: 'white',
+    borderWidth: 1,
     borderRadius: 15,
     marginBottom: 20,
+    overflow: 'hidden',
+    // alignItems: 'center',
+    // justifyContent: 'center',
+    // backgroundColor: '#5D4A99',
+    // maxWidth: 350,
+  },
+  countdownRow: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-around',
+    // width: '100%',
   },
-
-  label: {
-    color: '#fff',
-    fontWeight: '600',
-    fontSize: 16,
-    marginBottom: 15,
-    textAlign: 'center',
-  },
-
   optionsRow: {
     flexDirection: 'row',
-    gap: 15,
+    flexWrap: 'wrap', // ✅ buttons will wrap instead of overflowing
     justifyContent: 'center',
-    flexWrap: 'wrap',
+
+    // marginTop: 10,
   },
 
   circleButton: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
+    width: 40,
+    height: 40,
+    borderRadius: 20,
     backgroundColor: '#fff',
     justifyContent: 'center',
     alignItems: 'center',
-    elevation: 3,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
+    marginHorizontal: 6,
   },
 
   circleText: {
     fontWeight: 'bold',
-    fontSize: 16,
+    fontSize: 40 * 0.35,
     color: '#5D4A99',
-  },
-
-  countdownRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    width: '100%',
+    includeFontPadding: false,
   },
 
   timeDisplay: {
@@ -367,25 +373,25 @@ const styles = StyleSheet.create({
 
   timeBlock: {
     alignItems: 'center',
-    minWidth: 60,
+    // minWidth: 60,
   },
 
   timeText: {
     color: '#fff',
-    fontSize: 28,
+    fontSize: 12 * scale,
     fontWeight: 'bold',
   },
 
   subText: {
     color: '#ddd',
-    fontSize: 12,
+    fontSize: 12 * scale,
     marginTop: 2,
   },
 
   colon: {
     color: '#fff',
-    fontSize: 24,
-    marginHorizontal: 8,
+    fontSize: 12 * scale,
+    // marginHorizontal: 8,
   },
 
   controls: {
@@ -396,8 +402,8 @@ const styles = StyleSheet.create({
   },
 
   controlButton: {
-    paddingHorizontal: 20,
-    paddingVertical: 10,
+    // paddingHorizontal: 20,
+    // paddingVertical: 10,
     backgroundColor: 'rgba(255, 255, 255, 0.2)',
     borderRadius: 20,
     borderWidth: 1,
@@ -406,8 +412,8 @@ const styles = StyleSheet.create({
 
   controlText: {
     color: '#fff',
-    fontWeight: '500',
-    fontSize: 16,
+    fontWeight: '700',
+    fontSize: 10 * scale,
   },
 
   soundsContainer: {
@@ -440,7 +446,7 @@ const styles = StyleSheet.create({
   },
 
   soundLabel: {
-    fontSize: 16,
+    fontSize: 12 * scale,
     fontWeight: '600',
     color: '#333',
     flex: 1,
@@ -485,9 +491,14 @@ const styles = StyleSheet.create({
 
   resetButtonText: {
     color: '#ffffff',
-    fontSize: 18,
+    fontSize: 12 * scale,
     fontWeight: 'bold',
     letterSpacing: 1,
+    alignSelf: 'center',
+    alignContent: 'center',
+    textAlign: 'center',
+    // marginBottom: 10,
+    marginTop: 10,
   },
 });
 

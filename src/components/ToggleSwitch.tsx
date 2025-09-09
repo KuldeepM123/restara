@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { Text, TouchableOpacity, StyleSheet, Animated } from 'react-native';
 
-interface CustomToggleSwitchProps {
-  value: boolean;
-  onPress: () => void;
-}
-const CustomToggleSwitch = ({}: CustomToggleSwitchProps) => {
+// interface CustomToggleSwitchProps {
+//   value: boolean;
+//   onPress: () => void;
+// }
+const CustomToggleSwitch = () => {
   const [isOn, setIsOn] = useState(true);
   const [animValue] = useState(new Animated.Value(1));
 
