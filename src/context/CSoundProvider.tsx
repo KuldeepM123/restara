@@ -68,7 +68,9 @@ export const SoundMixerProvider: React.FC<SoundMixerProviderProps> = ({
   const [volumes, setVolumes] =
     useState<Record<string, number>>(INITIAL_VOLUMES);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [playingStates, setPlayingStates] = useState<Record<string, boolean>>({});
+  const [playingStates, setPlayingStates] = useState<Record<string, boolean>>(
+    {},
+  );
   const [isLoading, setIsLoading] = useState(true);
 
   // Create sound items from SliderData
@@ -165,7 +167,7 @@ export const SoundMixerProvider: React.FC<SoundMixerProviderProps> = ({
   // getIconForSound - Fixed version
   const getIconForSound = (soundId: string) => {
     const soundItem = soundItems.find(item => item.key === soundId);
-    const isCurrentlyPlaying = playingStates[soundId] && volumes[soundId] > 0;
+    const isCurrentlyPlaying = volumes[soundId] > 0;
     return isCurrentlyPlaying ? soundItem?.gif : soundItem?.png;
   };
 

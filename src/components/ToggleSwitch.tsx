@@ -1,22 +1,21 @@
 import React, { useState } from 'react';
 import { Text, TouchableOpacity, StyleSheet, Animated } from 'react-native';
 
-// interface CustomToggleSwitchProps {
-//   value: boolean;
-//   onPress: () => void;
-// }
-const CustomToggleSwitch = () => {
-  const [isOn, setIsOn] = useState(true);
+interface CustomToggleSwitchProps {
+  value: boolean; // current state (on/off)
+  onToggle: (newValue: boolean) => void;
+}
+const CustomToggleSwitch = ({ value, onToggle }: CustomToggleSwitchProps) => {
   const [animValue] = useState(new Animated.Value(1));
 
   const toggleSwitch = () => {
-    const toValue = isOn ? 0 : 1;
+    const toValue = value ? 0 : 1;
     Animated.timing(animValue, {
       toValue,
       duration: 200,
       useNativeDriver: false,
     }).start();
-    setIsOn(!isOn);
+    onToggle(!value);
   };
 
   // Animate highlight position
@@ -37,24 +36,24 @@ const CustomToggleSwitch = () => {
           styles.highlight,
           {
             transform: [{ translateX }],
-            backgroundColor: isOn ? 'green' : 'red',
+            backgroundColor: value ? 'green' : 'red',
           },
         ]}
       />
 
       {/* ON text */}
-      {isOn && (
+      {value && (
         <Text
-          style={[styles.text, { left: 10, color: isOn ? '#000' : '#777' }]}
+          style={[styles.text, { left: 10, color: value ? '#000' : '#777' }]}
         >
           ON
         </Text>
       )}
 
       {/* OFF text */}
-      {!isOn && (
+      {!value && (
         <Text
-          style={[styles.text, { right: 10, color: !isOn ? '#000' : '#777' }]}
+          style={[styles.text, { right: 10, color: !value ? '#000' : '#777' }]}
         >
           OFF
         </Text>

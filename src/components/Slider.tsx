@@ -21,6 +21,7 @@ const CustomSlider = ({ label, icon, value, onValueChange }: SliderProps) => {
           maximumValue={1}
           minimumTrackTintColor={'#8B7CB6'}
           maximumTrackTintColor={'#E0E0E0'}
+
           // thumbStyle={styles.thumb}
           // trackStyle={styles.track}
         />
@@ -37,7 +38,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     flex: 1,
-    paddingVertical: 5,
+    // paddingVertical: 5,
   },
   header: {
     flexDirection: 'row',

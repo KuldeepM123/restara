@@ -9,6 +9,7 @@ import {
   Switch,
   ScrollView,
   Dimensions,
+  StatusBar,
 } from 'react-native';
 import Slider from '@react-native-community/slider';
 import { useSoundMixer } from '../context/CSoundProvider';
@@ -117,6 +118,12 @@ const RestAraApp = () => {
     }
   };
 
+  const HandleMasterToggle = (newValue: any) => {
+    setMasterEnabled(newValue);
+    if (!newValue) {
+      resetMixer(); // Reset all volumes to 0 when turning off master
+    }
+  };
   const handleResetAll = () => {
     resetMixer();
     setMasterEnabled(false);
@@ -136,12 +143,14 @@ const RestAraApp = () => {
 
   return (
     <View style={styles.container}>
+      <StatusBar backgroundColor={'#5D4A99'} barStyle={'light-content'} />
       <Video
         source={require('../assets/videos/background_animation_1.mp4')} // your video url
         style={StyleSheet.absoluteFill} // makes it cover the whole screen
         resizeMode="cover"
         repeat
         muted
+        paused={!masterEnabled}
       />
       <SafeAreaProvider style={styles.container}>
         {/* Header */}
@@ -158,7 +167,10 @@ const RestAraApp = () => {
               thumbColor={masterEnabled ? '#ffffff' : '#f4f3f4'}
               style={styles.masterToggle}
             /> */}
-            <CustomToggleSwitch />
+            <CustomToggleSwitch
+              value={masterEnabled}
+              onToggle={HandleMasterToggle}
+            />
           </View>
         </View>
 
@@ -218,7 +230,10 @@ const RestAraApp = () => {
         </View>
 
         {/* Sound Controls */}
-        <ScrollView contentContainerStyle={styles.scrollContainer}>
+        <ScrollView
+          contentContainerStyle={styles.scrollContainer}
+          showsVerticalScrollIndicator={false}
+        >
           <View style={styles.soundsContainer}>
             {soundItems.map(item => (
               <View key={item.key} style={styles.soundItem}>
@@ -243,7 +258,7 @@ const RestAraApp = () => {
           </View>
         </ScrollView>
         {/* Reset Button */}
-        <View>
+        <View style={styles.resetContainer}>
           <TouchableOpacity style={styles.resetButton} onPress={handleResetAll}>
             <Text style={styles.resetButtonText}>RESET</Text>
           </TouchableOpacity>
@@ -259,7 +274,10 @@ const styles = StyleSheet.create({
   },
 
   scrollContainer: {
-    width: '100%',
+    // paddingBottom: 20,
+    marginTop: 10,
+    alignSelf: 'center',
+    width: '90%',
   },
   iconContainer: {
     width: '10%',
@@ -344,7 +362,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap', // ✅ buttons will wrap instead of overflowing
     justifyContent: 'center',
-
     // marginTop: 10,
   },
 
@@ -433,9 +450,12 @@ const styles = StyleSheet.create({
   },
 
   soundHeader: {
+    paddingHorizontal: 10,
+    top: -25,
+    flex: 0,
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 10,
+    // marginBottom: 10,
   },
 
   soundIcon: {
@@ -446,10 +466,16 @@ const styles = StyleSheet.create({
   },
 
   soundLabel: {
+    paddingHorizontal: 10,
+    paddingVertical: 2,
+    textAlign: 'center',
+    alignSelf: 'center',
+    backgroundColor: '#635E94',
+    borderRadius: 5,
+    borderColor: '#ddd',
     fontSize: 12 * scale,
     fontWeight: '600',
-    color: '#333',
-    flex: 1,
+    color: 'white',
   },
 
   sliderContainer: {
@@ -473,25 +499,34 @@ const styles = StyleSheet.create({
     height: 4,
     borderRadius: 2,
   },
-
+  resetContainer: {
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    alignSelf: 'center',
+  },
   resetButton: {
-    backgroundColor: '#6C5B99',
-    paddingVertical: 5,
+    paddingVertical: 8,
     borderRadius: 25,
     alignItems: 'center',
     marginBottom: 20,
     width: '20%',
     alignSelf: 'center',
+    // shadowColor: '#000',
+    // shadowOffset: { width: 0, height: 2 },
+    // shadowOpacity: 0.25,
+    // shadowRadius: 3.84,
     // elevation: 3,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
+    // backgroundColor: '#6C5B99',
   },
 
   resetButtonText: {
+    padding: 6,
+    borderWidth: 1,
+    borderColor: '#ffffff',
+    borderRadius: 25,
     color: '#ffffff',
-    fontSize: 12 * scale,
+    fontSize: 10 * scale,
     fontWeight: 'bold',
     letterSpacing: 1,
     alignSelf: 'center',
