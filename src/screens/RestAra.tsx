@@ -104,7 +104,6 @@ const RestAraApp = () => {
     setIsTimerRunning(false);
     setTimeLeft(0);
     setHasTimerStarted(false);
-    setMasterEnabled(false);
   };
 
   const handleVolumeChange = (soundId: string, volume: number) => {

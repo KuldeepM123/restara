@@ -1,63 +1,59 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Text, TouchableOpacity, StyleSheet, Animated } from 'react-native';
 
 interface CustomToggleSwitchProps {
   value: boolean; // current state (on/off)
   onToggle: (newValue: boolean) => void;
 }
-const CustomToggleSwitch = ({ value, onToggle }: CustomToggleSwitchProps) => {
-  const [animValue] = useState(new Animated.Value(1));
 
-  const toggleSwitch = () => {
-    const toValue = value ? 0 : 1;
+const CustomToggleSwitch = ({ value, onToggle }: CustomToggleSwitchProps) => {
+  const [animValue] = useState(new Animated.Value(value ? 1 : 0));
+
+  useEffect(() => {
     Animated.timing(animValue, {
-      toValue,
+      toValue: value ? 1 : 0,
       duration: 200,
       useNativeDriver: false,
     }).start();
+  }, [value]);
+
+  const toggleSwitch = () => {
     onToggle(!value);
   };
 
-  // Animate highlight position
   const translateX = animValue.interpolate({
     inputRange: [0, 1],
-    outputRange: [0, 35], // adjust for width
+    outputRange: [1, 45], // knob travel distance
   });
 
   return (
     <TouchableOpacity
-      activeOpacity={0.2}
+      activeOpacity={0.8}
       onPress={toggleSwitch}
       style={styles.switchContainer}
     >
-      {/* Moving highlight */}
+      {/* Labels */}
+      <Text
+        style={[styles.label, { left: 10, color: value ? '#000' : 'white' }]}
+      >
+        ON
+      </Text>
+      <Text
+        style={[styles.label, { right: 10, color: !value ? '#000' : 'white' }]}
+      >
+        OFF
+      </Text>
+
+      {/* Moving Knob */}
       <Animated.View
         style={[
-          styles.highlight,
+          styles.knob,
           {
             transform: [{ translateX }],
             backgroundColor: value ? 'green' : 'red',
           },
         ]}
       />
-
-      {/* ON text */}
-      {value && (
-        <Text
-          style={[styles.text, { left: 10, color: value ? '#000' : '#777' }]}
-        >
-          ON
-        </Text>
-      )}
-
-      {/* OFF text */}
-      {!value && (
-        <Text
-          style={[styles.text, { right: 10, color: !value ? '#000' : '#777' }]}
-        >
-          OFF
-        </Text>
-      )}
     </TouchableOpacity>
   );
 };
@@ -65,22 +61,20 @@ const CustomToggleSwitch = ({ value, onToggle }: CustomToggleSwitchProps) => {
 const styles = StyleSheet.create({
   switchContainer: {
     width: 70,
-    height: 30,
+    height: 25,
     borderRadius: 20,
     backgroundColor: '#fff',
     flexDirection: 'row',
     alignItems: 'center',
-    // justifyContent: 'space-between',
-    // position: 'relative',
-    // overflow: 'hidden',
+    paddingHorizontal: 5,
   },
-  highlight: {
+  knob: {
     position: 'absolute',
-    width: 35, // half the switch width
-    height: '100%',
+    width: 23,
+    height: 23,
     borderRadius: 20,
   },
-  text: {
+  label: {
     position: 'absolute',
     fontSize: 12,
     fontWeight: 'bold',
