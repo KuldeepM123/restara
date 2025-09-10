@@ -11,7 +11,6 @@ import {
   Dimensions,
   StatusBar,
 } from 'react-native';
-import Slider from '@react-native-community/slider';
 import { useSoundMixer } from '../context/CSoundProvider';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import LogoVertical from '../../src/assets/icons/logo-vertical.svg';
@@ -106,7 +105,6 @@ const RestAraApp = () => {
     setTimeLeft(0);
     setHasTimerStarted(false);
     setMasterEnabled(false);
-    // resetMixer(); // Reset all sound volumes to 0
   };
 
   const handleVolumeChange = (soundId: string, volume: number) => {
@@ -122,6 +120,9 @@ const RestAraApp = () => {
     setMasterEnabled(newValue);
     if (!newValue) {
       resetMixer(); // Reset all volumes to 0 when turning off master
+      if (isPlaying) {
+        togglePlayAll(); // Stop all sounds when turning off master
+      }
     }
   };
   const handleResetAll = () => {
@@ -150,7 +151,7 @@ const RestAraApp = () => {
         resizeMode="cover"
         repeat
         muted
-        paused={!masterEnabled}
+        paused={!isPlaying}
       />
       <SafeAreaProvider style={styles.container}>
         {/* Header */}
@@ -246,6 +247,7 @@ const RestAraApp = () => {
                     value={volumes[item.key]}
                     onValueChange={value => handleVolumeChange(item.key, value)}
                   />
+
                   <View style={styles.iconContainer}>
                     <Image
                       source={getIconForSound(item.key)}

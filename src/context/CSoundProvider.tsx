@@ -76,7 +76,7 @@ export const SoundMixerProvider: React.FC<SoundMixerProviderProps> = ({
   // Create sound items from SliderData
   const soundItems = SliderData.map(item => ({
     key: item.id,
-    icon: item.png || '🎵', // Use emoji, png, or fallback
+    icon: isPlaying ? item.gif : item.png, // Use emoji, png, or fallback
     png: item.png,
     gif: item.gif,
     label: item.label,

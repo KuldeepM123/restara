@@ -18,17 +18,17 @@ const CustomSlider = ({ label, icon, value, onValueChange }: SliderProps) => {
           onValueChange={onValueChange}
           value={value || 0}
           minimumValue={0}
-          maximumValue={1}
-          minimumTrackTintColor={'#8B7CB6'}
-          maximumTrackTintColor={'#E0E0E0'}
+          maximumValue={50}
+          minimumTrackTintColor={'#635E94'}
+          maximumTrackTintColor={'#635E94'}
 
           // thumbStyle={styles.thumb}
           // trackStyle={styles.track}
         />
       </View>
-      <View style={styles.header}>
+      {/* <View style={styles.header}>
         {icon && <View style={styles.icon}>{icon}</View>}
-      </View>
+      </View> */}
     </View>
   );
 };
@@ -58,14 +58,16 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 40,
     justifyContent: 'center',
+    flex: 1,
+
     // paddingHorizontal: 5,
   },
   slider: {
     width: '100%',
-    height: 40,
+    height: '50%',
   },
   thumb: {
-    backgroundColor: '#8B7CB6',
+    backgroundColor: '#635E94',
     width: 24,
     height: 24,
     borderRadius: 12,
