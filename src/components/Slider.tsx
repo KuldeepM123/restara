@@ -18,7 +18,7 @@ const CustomSlider = ({ label, icon, value, onValueChange }: SliderProps) => {
           onValueChange={onValueChange}
           value={value || 0}
           minimumValue={0}
-          maximumValue={50}
+          maximumValue={1}
           minimumTrackTintColor={'#635E94'}
           maximumTrackTintColor={'#635E94'}
 
