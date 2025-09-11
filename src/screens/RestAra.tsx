@@ -266,14 +266,17 @@ const styles = StyleSheet.create({
   },
 
   scrollContainer: {
-    // paddingBottom: 20,
     marginTop: 10,
     alignSelf: 'center',
     width: '90%',
   },
   iconContainer: {
     // backgroundColor: 'red',
-    width: '10%',
+    // width: '10%',
+    // justifyContent: 'center',
+    borderLeftColor: 'grey',
+    borderLeftWidth: 2,
+    paddingLeft: 8,
   },
   loadingContainer: {
     flex: 1,
@@ -434,18 +437,17 @@ const styles = StyleSheet.create({
   },
 
   soundsContainer: {
-    gap: 15,
-    marginBottom: 30,
+    gap: 35,
+    marginBottom: 20,
   },
 
   soundItem: {
     flexDirection: 'row',
-    // flexWrap: 'nowrap',
     justifyContent: 'flex-start',
     alignItems: 'center',
-    backgroundColor: '#ffffff',
+    backgroundColor: '#f5f5f5',
     borderRadius: 15,
-    padding: 15,
+    padding: 10,
     elevation: 3,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
@@ -456,7 +458,8 @@ const styles = StyleSheet.create({
   soundHeader: {
     position: 'absolute',
     paddingHorizontal: 10,
-    top: -10,
+    marginHorizontal: 12,
+    top: -5,
     flex: 0,
     flexDirection: 'row',
     alignItems: 'center',
@@ -465,9 +468,8 @@ const styles = StyleSheet.create({
 
   soundIcon: {
     // flexDirection: 'row',
-    width: 30,
-    height: 30,
-    marginRight: 10,
+    width: 40,
+    height: 40,
   },
 
   soundLabel: {
@@ -476,7 +478,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     alignSelf: 'center',
     backgroundColor: '#635E94',
-    borderRadius: 5,
+    borderRadius: 4,
     borderColor: '#ddd',
     fontSize: 12 * scale,
     fontWeight: '600',
@@ -484,6 +486,7 @@ const styles = StyleSheet.create({
   },
   soundContainer: {
     flexDirection: 'row',
+
     // flex: 1,
     // alignItems: 'center',
     // justifyContent: 'space-between',

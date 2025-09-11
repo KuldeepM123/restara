@@ -60,8 +60,8 @@ const styles = StyleSheet.create({
     // paddingHorizontal: 5,
   },
   slider: {
-    width: '100%',
-    height: '50%',
+    // width: '100%',
+    // height: '50%',
   },
   thumb: {
     backgroundColor: '#635E94',
@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   track: {
-    height: 6,
+    height: 10,
     borderRadius: 3,
   },
 });

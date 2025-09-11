@@ -14,6 +14,10 @@ import { SplashScreenNavigationProp } from '../../types/navigation';
 import Mandala from '../../assets/icons/mandala.svg';
 import Buddha from '../../assets/icons/buddha.svg';
 import Logo from '../../assets/icons/logo.svg';
+
+const { width } = Dimensions.get('screen');
+const scale = width / 375;
+
 const SplashScreen = () => {
   const navigation = useNavigation<SplashScreenNavigationProp>();
   const spinValue = useRef(new Animated.Value(0)).current;
@@ -101,16 +105,16 @@ const styles = StyleSheet.create({
     zIndex: 999,
   },
   mandalaWrapper: {
-    // position: 'absolute',
-    top: -25,
+    position: 'absolute',
+    top: 10,
   },
   buddha: {
     position: 'absolute',
-    left: '50%',
+    left: '50.6%',
     transform: [{ translateX: '-50%' }],
   },
   tagline: {
-    fontSize: 14,
+    fontSize: 14 * scale,
     color: 'white',
     letterSpacing: 1,
     textAlign: 'center',
