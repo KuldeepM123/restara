@@ -1,6 +1,14 @@
 // SplashScreen.tsx
 import React, { useEffect, useRef } from 'react';
-import { View, Animated, StyleSheet, Text, Image, Easing } from 'react-native';
+import {
+  View,
+  Animated,
+  StyleSheet,
+  Text,
+  Image,
+  Easing,
+  Dimensions,
+} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { SplashScreenNavigationProp } from '../../types/navigation';
 import Mandala from '../../assets/icons/mandala.svg';
@@ -9,6 +17,7 @@ import Logo from '../../assets/icons/logo.svg';
 const SplashScreen = () => {
   const navigation = useNavigation<SplashScreenNavigationProp>();
   const spinValue = useRef(new Animated.Value(0)).current;
+  const { width, height } = Dimensions.get('screen');
 
   useEffect(() => {
     // Spin chakra infinitely
@@ -47,16 +56,16 @@ const SplashScreen = () => {
 
   return (
     <View style={styles.container}>
-      <Logo style={{ alignSelf: 'center', marginTop: 50 }} />
+      <Logo style={[styles.logo, { marginTop: height * 0.06 }]} />
 
       <View style={styles.centerWrapper}>
-        <View>
+        <View style={styles.mandalaWrapper}>
           <Animated.View style={{ transform: [{ rotate: spin }] }}>
-            <Mandala width={350} height={350} />
+            <Mandala width={width * 0.85} height={width * 0.85} />
           </Animated.View>
         </View>
-        <View style={styles.buddha}>
-          <Buddha width={360} height={360} />
+        <View style={[styles.buddha, { top: height * 0.16 }]}>
+          <Buddha width={width * 0.87} height={width * 0.87} />
         </View>
       </View>
 
@@ -66,7 +75,9 @@ const SplashScreen = () => {
         resizeMode="cover"
       />
 
-      <Text style={styles.tagline}>WHERE PEACE BEGINS.</Text>
+      <Text style={[styles.tagline, { marginBottom: height * 0.08 }]}>
+        WHERE PEACE BEGINS.
+      </Text>
     </View>
   );
 };
@@ -80,26 +91,30 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#5b4d8c',
   },
+  logo: {
+    alignSelf: 'center',
+  },
   centerWrapper: {
     flex: 1,
-    width: '100%',
-    height: '100%',
-    zIndex: 999,
-    top: 60,
-    position: 'relative',
+    justifyContent: 'center',
     alignItems: 'center',
+    zIndex: 999,
+  },
+  mandalaWrapper: {
+    // position: 'absolute',
+    top: -25,
   },
   buddha: {
     position: 'absolute',
-    top: 135,
     left: '50%',
-    transform: [{ translateX: '-49.5%' }],
+    transform: [{ translateX: '-50%' }],
   },
   tagline: {
     fontSize: 14,
     color: 'white',
     letterSpacing: 1,
-    marginBottom: 60,
     textAlign: 'center',
+    includeFontPadding: false,
+    textAlignVertical: 'center',
   },
 });

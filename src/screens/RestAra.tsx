@@ -159,14 +159,6 @@ const RestAraApp = () => {
             <Text style={styles.logo}>{<LogoVertical />}</Text>
           </View>
           <View style={styles.headerRight}>
-            {/* <Text style={styles.toggleLabel}>ON</Text>
-            <Switch
-              value={masterEnabled}
-              onValueChange={setMasterEnabled}
-              trackColor={{ false: '#767577', true: '#ff6b6b' }}
-              thumbColor={masterEnabled ? '#ffffff' : '#f4f3f4'}
-              style={styles.masterToggle}
-            /> */}
             <CustomToggleSwitch
               value={masterEnabled}
               onToggle={HandleMasterToggle}
