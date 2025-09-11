@@ -23,7 +23,7 @@ const CustomToggleSwitch = ({ value, onToggle }: CustomToggleSwitchProps) => {
 
   const translateX = animValue.interpolate({
     inputRange: [0, 1],
-    outputRange: [1, 45], // knob travel distance
+    outputRange: [3, 45], // knob travel distance
   });
 
   return (
@@ -60,18 +60,18 @@ const CustomToggleSwitch = ({ value, onToggle }: CustomToggleSwitchProps) => {
 
 const styles = StyleSheet.create({
   switchContainer: {
-    width: 70,
+    width: 80,
     height: 25,
     borderRadius: 20,
     backgroundColor: '#fff',
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 5,
+    // paddingHorizontal: 5,
   },
   knob: {
     position: 'absolute',
-    width: 23,
-    height: 23,
+    width: 32,
+    height: 20,
     borderRadius: 20,
   },
   label: {

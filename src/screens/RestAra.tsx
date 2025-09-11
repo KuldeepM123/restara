@@ -6,7 +6,6 @@ import {
   StyleSheet,
   Vibration,
   Image,
-  Switch,
   ScrollView,
   Dimensions,
   StatusBar,
@@ -15,7 +14,6 @@ import { useSoundMixer } from '../context/CSoundProvider';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import LogoVertical from '../../src/assets/icons/logo-vertical.svg';
 import CustomSlider from '../components/Slider';
-import { SliderData } from '../constants/SliderData';
 import Video from 'react-native-video';
 import CustomToggleSwitch from '../components/ToggleSwitch';
 
@@ -148,7 +146,7 @@ const RestAraApp = () => {
         source={require('../assets/videos/background_animation_1.mp4')} // your video url
         style={StyleSheet.absoluteFill} // makes it cover the whole screen
         resizeMode="cover"
-        repeat
+        repeat={isPlaying}
         muted
         paused={!isPlaying}
       />
@@ -232,13 +230,14 @@ const RestAraApp = () => {
                 <View style={styles.soundHeader}>
                   <Text style={styles.soundLabel}>{item.label}</Text>
                 </View>
-                <View style={styles.sliderContainer}>
-                  <CustomSlider
-                    label={item.label}
-                    value={volumes[item.key]}
-                    onValueChange={value => handleVolumeChange(item.key, value)}
-                  />
-
+                <View style={styles.soundContainer}>
+                  <View style={styles.sliderContainer}>
+                    <CustomSlider
+                      onValueChange={volume =>
+                        handleVolumeChange(item.key, volume)
+                      }
+                    />
+                  </View>
                   <View style={styles.iconContainer}>
                     <Image
                       source={getIconForSound(item.key)}
@@ -273,6 +272,7 @@ const styles = StyleSheet.create({
     width: '90%',
   },
   iconContainer: {
+    // backgroundColor: 'red',
     width: '10%',
   },
   loadingContainer: {
@@ -348,7 +348,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     alignItems: 'center',
-    justifyContent: 'space-around',
+    justifyContent: 'space-between',
     // width: '100%',
   },
   optionsRow: {
@@ -378,29 +378,36 @@ const styles = StyleSheet.create({
   timeDisplay: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-between',
     // marginBottom: 20,
   },
 
   timeBlock: {
     alignItems: 'center',
+    // backgroundColor: 'red',
+    paddingHorizontal: 10,
+    // justifyContent: 'space-between',
     // minWidth: 60,
   },
 
   timeText: {
+    fontFamily: 'Poppin-Regular',
     color: '#fff',
-    fontSize: 12 * scale,
+    fontSize: 20 * scale,
     fontWeight: 'bold',
   },
 
   subText: {
     color: '#ddd',
-    fontSize: 12 * scale,
+    fontSize: 7 * scale,
     marginTop: 2,
   },
 
   colon: {
     color: '#fff',
-    fontSize: 12 * scale,
+    fontSize: 20 * scale,
+    fontWeight: 'bold',
+    top: -6,
     // marginHorizontal: 8,
   },
 
@@ -432,6 +439,10 @@ const styles = StyleSheet.create({
   },
 
   soundItem: {
+    flexDirection: 'row',
+    // flexWrap: 'nowrap',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
     backgroundColor: '#ffffff',
     borderRadius: 15,
     padding: 15,
@@ -443,8 +454,9 @@ const styles = StyleSheet.create({
   },
 
   soundHeader: {
+    position: 'absolute',
     paddingHorizontal: 10,
-    top: -25,
+    top: -10,
     flex: 0,
     flexDirection: 'row',
     alignItems: 'center',
@@ -452,7 +464,7 @@ const styles = StyleSheet.create({
   },
 
   soundIcon: {
-    flexDirection: 'row',
+    // flexDirection: 'row',
     width: 30,
     height: 30,
     marginRight: 10,
@@ -470,10 +482,20 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: 'white',
   },
+  soundContainer: {
+    flexDirection: 'row',
+    // flex: 1,
+    // alignItems: 'center',
+    // justifyContent: 'space-between',
+    // backgroundColor: 'red',
+    // width: '100%',
+  },
 
   sliderContainer: {
     flexDirection: 'row',
-    alignItems: 'center',
+    flex: 1,
+    justifyContent: 'center',
+    // alignItems: 'center',
     // paddingHorizontal: 5,
   },
 
@@ -497,6 +519,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     alignSelf: 'center',
+    // paddingVertical: 10,
   },
   resetButton: {
     paddingVertical: 8,
@@ -514,7 +537,9 @@ const styles = StyleSheet.create({
   },
 
   resetButtonText: {
-    padding: 6,
+    fontFamily: 'Poppin-Regular',
+    paddingHorizontal: 20,
+    paddingVertical: 5,
     borderWidth: 1,
     borderColor: '#ffffff',
     borderRadius: 25,

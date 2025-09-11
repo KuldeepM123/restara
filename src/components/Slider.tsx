@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import Slider from '@react-native-community/slider';
 
 interface SliderProps {
@@ -26,9 +26,6 @@ const CustomSlider = ({ label, icon, value, onValueChange }: SliderProps) => {
           // trackStyle={styles.track}
         />
       </View>
-      {/* <View style={styles.header}>
-        {icon && <View style={styles.icon}>{icon}</View>}
-      </View> */}
     </View>
   );
 };
