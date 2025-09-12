@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import {
   View,
   Text,
@@ -22,6 +22,7 @@ const scale = width / 375;
 
 const RestAraApp = () => {
   // Timer state
+  const [videoPlaying, setVideoPlaying] = useState(false);
   const [timeLeft, setTimeLeft] = useState(0);
   const [isTimerRunning, setIsTimerRunning] = useState(false);
   const [hasTimerStarted, setHasTimerStarted] = useState(false);
@@ -39,6 +40,31 @@ const RestAraApp = () => {
     resetMixer,
     isLoading,
   } = useSoundMixer();
+
+  // Master toggle effect - controls all sounds
+  useEffect(() => {
+    if (masterEnabled) {
+      // If any sounds have volume > 0, start playing them
+      if (Object.values(volumes).some(vol => vol > 0)) {
+        togglePlayAll();
+      }
+    } else {
+      // Stop all sounds when master is disabled
+      if (isPlaying) {
+        togglePlayAll();
+      }
+    }
+  }, [masterEnabled]);
+
+  // useEffect(() => {
+  //   const hasActiveSounds = Object.values(volumes).some(vol => vol > 0);
+  //   const shouldPlay = masterEnabled && hasActiveSounds;
+  //   setVideoPlaying(shouldPlay);
+  // }, [masterEnabled, volumes]);
+
+  useEffect(() => {
+    setVideoPlaying(isPlaying);
+  }, [isPlaying]);
 
   // Timer countdown effect
   useEffect(() => {
@@ -63,21 +89,6 @@ const RestAraApp = () => {
       Vibration.vibrate(1000);
     }
   }, [timeLeft, hasTimerStarted]);
-
-  // Master toggle effect - controls all sounds
-  useEffect(() => {
-    if (masterEnabled) {
-      // If any sounds have volume > 0, start playing them
-      if (Object.values(volumes).some(vol => vol > 0)) {
-        togglePlayAll();
-      }
-    } else {
-      // Stop all sounds when master is disabled
-      if (isPlaying) {
-        togglePlayAll();
-      }
-    }
-  }, [masterEnabled]);
 
   // Format time as HH : MM : SS
   const formatTime = (seconds: number) => {
@@ -104,11 +115,17 @@ const RestAraApp = () => {
     setHasTimerStarted(false);
   };
 
+  //resetSlider
+  const resetSlider = useCallback(() => {
+    resetMixer(); // context reset
+    soundItems.forEach(item => setVolume(item.key, 0)); // slider reset
+  }, [soundItems, setVolume, resetMixer]);
+
   const handleVolumeChange = (soundId: string, volume: number) => {
     setVolume(soundId, volume);
 
     // Auto-enable master toggle if any volume is set and master is off
-    if (volume > 0 && !masterEnabled) {
+    if (volume > 0) {
       setMasterEnabled(true);
     }
   };
@@ -124,6 +141,8 @@ const RestAraApp = () => {
   };
   const handleResetAll = () => {
     resetMixer();
+    resetTimer();
+    resetSlider();
     setMasterEnabled(false);
   };
 
@@ -146,7 +165,6 @@ const RestAraApp = () => {
         source={require('../assets/videos/background_animation_1.mp4')} // your video url
         style={StyleSheet.absoluteFill} // makes it cover the whole screen
         resizeMode="cover"
-        repeat={isPlaying}
         muted
         paused={!isPlaying}
       />
@@ -233,6 +251,7 @@ const RestAraApp = () => {
                 <View style={styles.soundContainer}>
                   <View style={styles.sliderContainer}>
                     <CustomSlider
+                      value={volumes[item.key]}
                       onValueChange={volume =>
                         handleVolumeChange(item.key, volume)
                       }
@@ -334,12 +353,13 @@ const styles = StyleSheet.create({
     transform: [{ scaleX: 1.2 }, { scaleY: 1.2 }],
   },
   timerBox: {
+    backgroundColor: '#635E94',
     width: '90%',
     padding: 15,
     alignSelf: 'center',
-    borderColor: 'white',
-    borderWidth: 1,
-    borderRadius: 15,
+    borderColor: '#D3D3D3',
+    borderWidth: 2,
+    borderRadius: 9,
     marginBottom: 20,
     overflow: 'hidden',
     // alignItems: 'center',
@@ -446,7 +466,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'center',
     backgroundColor: '#f5f5f5',
-    borderRadius: 15,
+    borderRadius: 12,
     padding: 10,
     elevation: 3,
     shadowColor: '#000',
@@ -459,7 +479,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     paddingHorizontal: 10,
     marginHorizontal: 12,
-    top: -5,
+    top: -8,
     flex: 0,
     flexDirection: 'row',
     alignItems: 'center',
@@ -540,11 +560,12 @@ const styles = StyleSheet.create({
   },
 
   resetButtonText: {
+    backgroundColor: '#635E94',
     fontFamily: 'Poppin-Regular',
     paddingHorizontal: 20,
     paddingVertical: 5,
-    borderWidth: 1,
-    borderColor: '#ffffff',
+    borderWidth: 2,
+    borderColor: '#D3D3D3',
     borderRadius: 25,
     color: '#ffffff',
     fontSize: 10 * scale,

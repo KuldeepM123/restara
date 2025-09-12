@@ -36,25 +36,6 @@ const SoundMixerContext = createContext<SoundMixerContextType | undefined>(
   undefined,
 );
 
-// Icon mapping for emojis (optional - you can also add icons directly to SliderData)
-// const iconMap: Record<string, string> = {
-//   bell: '🔔',
-//   bird: '🐦',
-//   fire: '🔥',
-//   flute: '🎵',
-//   frog: '🐸',
-//   ice_cracking: '🧊',
-//   ocean: '🌊',
-//   om: '🕉️',
-//   owl: '🦉',
-//   rain: '🌧️',
-//   thunder: '⛈️',
-//   tibetan_bowls: '🔔',
-//   train: '🚂',
-//   wind_chimes: '🎐',
-//   wind: '🌬️',
-// };
-
 // Initial volumes - all sounds start at 0
 const INITIAL_VOLUMES = Object.fromEntries(
   SliderData.map(item => [item.id, 0]),
@@ -84,35 +65,52 @@ export const SoundMixerProvider: React.FC<SoundMixerProviderProps> = ({
   }));
 
   // Load sounds on mount
+  // useEffect(() => {
+  //   Sound.setCategory('Playback');
+
+  //   const soundFiles = [
+  //     'bell.mp3',
+  //     'bird.mp3',
+  //     'fire.mp3',
+  //     'flute.mp3',
+  //     'frog.mp3',
+  //     'ice_cracking.mp3',
+  //     'ocean.mp3',
+  //     'om.mp3',
+  //     'owl.mp3',
+  //     'rain.mp3',
+  //     'thunder.mp3',
+  //     'tibetan_bowls.mp3',
+  //     'train.mp3',
+  //     'wind_chimes.mp3',
+  //     'wind.mp3',
+  //   ];
+
+  //   soundFiles.forEach(file => {
+  //     const id = file.replace('.mp3', '').replace('_', '_');
+  //     const sound = new Sound(file, Sound.MAIN_BUNDLE, error => {
+  //       if (error) {
+  //         console.log(`Error loading ${id}:`, error);
+  //       } else {
+  //         console.log(`${id} loaded successfully`);
+  //         sounds.current[id] = sound;
+  //       }
+  //     });
+  //   });
+
+  //   setIsLoading(false);
+  // }, []);
+
   useEffect(() => {
     Sound.setCategory('Playback');
 
-    const soundFiles = [
-      'bell.mp3',
-      'bird.mp3',
-      'fire.mp3',
-      'flute.mp3',
-      'frog.mp3',
-      'ice_cracking.mp3',
-      'ocean.mp3',
-      'om.mp3',
-      'owl.mp3',
-      'rain.mp3',
-      'thunder.mp3',
-      'tibetan_bowls.mp3',
-      'train.mp3',
-      'wind_chimes.mp3',
-      'wind.mp3',
-    ];
-
-    soundFiles.forEach(file => {
-      const id = file.replace('.mp3', '').replace('_', '_');
-      const sound = new Sound(file, Sound.MAIN_BUNDLE, error => {
+    SliderData.forEach(item => {
+      const sound = new Sound(item.sound, Sound.MAIN_BUNDLE, error => {
         if (error) {
-          console.log(`Error loading ${id}:`, error);
+          console.log(`Error loading ${item.id}:`, error);
         } else {
-          console.log(`${id} loaded successfully`);
-          sounds.current[id] = sound;
+          console.log(`${item.id} loaded successfully`);
+          sounds.current[item.id] = sound;
         }
       });
     });
