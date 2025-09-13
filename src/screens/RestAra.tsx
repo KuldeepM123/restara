@@ -20,9 +20,17 @@ import CustomToggleSwitch from '../components/ToggleSwitch';
 const { width } = Dimensions.get('screen');
 const scale = width / 375;
 
+const debounce = (func: Function, delay: number) => {
+  let timeoutId: ReturnType<typeof setTimeout>;
+  return (...args: any[]) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => func.apply(null, args), delay);
+  };
+};
+
 const RestAraApp = () => {
   // Timer state
-  const [videoPlaying, setVideoPlaying] = useState(false);
+  // const [videoPlaying, setVideoPlaying] = useState(false);
   const [timeLeft, setTimeLeft] = useState(0);
   const [isTimerRunning, setIsTimerRunning] = useState(false);
   const [hasTimerStarted, setHasTimerStarted] = useState(false);
@@ -62,9 +70,9 @@ const RestAraApp = () => {
   //   setVideoPlaying(shouldPlay);
   // }, [masterEnabled, volumes]);
 
-  useEffect(() => {
-    setVideoPlaying(isPlaying);
-  }, [isPlaying]);
+  // useEffect(() => {
+  //   setVideoPlaying(isPlaying);
+  // }, [isPlaying]);
 
   // Timer countdown effect
   useEffect(() => {
@@ -78,7 +86,7 @@ const RestAraApp = () => {
     return () => {
       if (intervalRef.current) clearInterval(intervalRef.current);
     };
-  }, [isTimerRunning]);
+  }, [isTimerRunning, timeLeft]);
 
   // Timer completion effect
   useEffect(() => {
@@ -121,16 +129,17 @@ const RestAraApp = () => {
     soundItems.forEach(item => setVolume(item.key, 0)); // slider reset
   }, [soundItems, setVolume, resetMixer]);
 
-  const handleVolumeChange = (soundId: string, volume: number) => {
-    setVolume(soundId, volume);
+  const handleVolumeChange = useCallback(
+    debounce((soundId: string, volume: number) => {
+      setVolume(soundId, volume);
+      if (volume > 0) {
+        setMasterEnabled(true);
+      }
+    }, 100),
+    [setVolume, setMasterEnabled],
+  );
 
-    // Auto-enable master toggle if any volume is set and master is off
-    if (volume > 0) {
-      setMasterEnabled(true);
-    }
-  };
-
-  const HandleMasterToggle = (newValue: any) => {
+  const handleMasterToggle = (newValue: any) => {
     setMasterEnabled(newValue);
     if (!newValue) {
       resetMixer(); // Reset all volumes to 0 when turning off master
@@ -161,12 +170,26 @@ const RestAraApp = () => {
   return (
     <View style={styles.container}>
       <StatusBar backgroundColor={'#5D4A99'} barStyle={'light-content'} />
-      <Video
+      {/* <Video
         source={require('../assets/videos/background_animation_1.mp4')} // your video url
         style={StyleSheet.absoluteFill} // makes it cover the whole screen
         resizeMode="cover"
         muted
         paused={!isPlaying}
+      /> */}
+      {/* // Add these props to your Video component: */}
+      <Video
+        source={require('../assets/videos/background_animation_1.mp4')}
+        style={StyleSheet.absoluteFill}
+        resizeMode="cover"
+        muted
+        repeat={true} // Loop the video
+        paused={!isPlaying}
+        onError={error => console.log('Video Error:')}
+        onLoad={() => console.log('Video loaded successfully')}
+        onBuffer={buffer => console.log('Video buffering:')}
+        playInBackground={false}
+        playWhenInactive={false}
       />
       <SafeAreaProvider style={styles.container}>
         {/* Header */}
@@ -177,7 +200,7 @@ const RestAraApp = () => {
           <View style={styles.headerRight}>
             <CustomToggleSwitch
               value={masterEnabled}
-              onToggle={HandleMasterToggle}
+              onToggle={handleMasterToggle}
             />
           </View>
         </View>
@@ -290,9 +313,6 @@ const styles = StyleSheet.create({
     width: '90%',
   },
   iconContainer: {
-    // backgroundColor: 'red',
-    // width: '10%',
-    // justifyContent: 'center',
     borderLeftColor: 'grey',
     borderLeftWidth: 2,
     paddingLeft: 8,
@@ -323,7 +343,6 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontWeight: '600',
     fontSize: 12 * scale,
-    // marginBottom: 15,
     textAlign: 'center',
   },
 
