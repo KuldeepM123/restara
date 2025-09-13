@@ -325,7 +325,7 @@ const styles = StyleSheet.create({
 
   loadingText: {
     color: '#ffffff',
-    fontSize: 18,
+    fontSize: 18 * scale,
     fontWeight: '500',
   },
 
@@ -395,7 +395,7 @@ const styles = StyleSheet.create({
   },
   optionsRow: {
     flexDirection: 'row',
-    flexWrap: 'wrap', // ✅ buttons will wrap instead of overflowing
+    flexWrap: 'wrap',
     justifyContent: 'center',
     // marginTop: 10,
   },
@@ -412,7 +412,7 @@ const styles = StyleSheet.create({
 
   circleText: {
     fontWeight: 'bold',
-    fontSize: 40 * 0.35,
+    fontSize: 40 * 0.35 * scale,
     color: '#5D4A99',
     includeFontPadding: false,
   },
