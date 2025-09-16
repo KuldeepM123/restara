@@ -30,6 +30,7 @@ const debounce = (func: Function, delay: number) => {
 
 const RestAraApp = () => {
   // Timer state
+  // const [videoPlaying, setVideoPlaying] = useState(false);
   const [timeLeft, setTimeLeft] = useState(0);
   const [isTimerRunning, setIsTimerRunning] = useState(false);
   const [hasTimerStarted, setHasTimerStarted] = useState(false);
@@ -122,45 +123,6 @@ const RestAraApp = () => {
     setHasTimerStarted(false);
   };
 
-  //resetSlider
-  // const resetSlider = useCallback(() => {
-  //   resetMixer(); // context reset
-  //   soundItems.forEach(item => setVolume(item.key, 0)); // slider reset
-  // }, [soundItems, setVolume, resetMixer]);
-
-  // const handleVolumeChange = useCallback(
-  //   debounce((soundId: string, volume: number) => {
-  //     setVolume(soundId, volume);
-  //     if (volume > 0) {
-  //       setMasterEnabled(true);
-  //     }
-  //   }, 100),
-  //   [setVolume, setMasterEnabled],
-  // );
-
-  // const handleMasterToggle = (newValue: any) => {
-  //   setMasterEnabled(newValue);
-  //   if (!newValue) {
-  //     resetMixer(); // Reset all volumes to 0 when turning off master
-  //     if (isPlaying) {
-  //       togglePlayAll(); // Stop all sounds when turning off master
-  //     }
-  //   }
-  // };
-  const resetSlider = useCallback(() => {
-    resetMixer(); // This already resets all volumes to 0
-  }, [resetMixer]);
-
-  // const handleVolumeChange = useCallback(
-  //   debounce((soundId: string, volume: number) => {
-  //     setVolume(soundId, volume);
-  //     if (volume > 0) {
-  //       setMasterEnabled(true);
-  //     }
-  //   }, 100),
-  //   [setVolume, setMasterEnabled],
-  // );
-
   const handleVolumeChange = (soundId: string, volume: number) => {
     setVolume(soundId, volume);
     if (volume > 0) {
@@ -198,13 +160,6 @@ const RestAraApp = () => {
   return (
     <View style={styles.container}>
       <StatusBar backgroundColor={'#5D4A99'} barStyle={'light-content'} />
-      {/* <Video
-        source={require('../assets/videos/background_animation_1.mp4')} // your video url
-        style={StyleSheet.absoluteFill} // makes it cover the whole screen
-        resizeMode="cover"
-        muted
-        paused={!isPlaying}
-      /> */}
       {/* // Add these props to your Video component: */}
       <Video
         source={require('../assets/videos/background_animation_1.mp4')}
@@ -213,9 +168,6 @@ const RestAraApp = () => {
         muted
         repeat={true} // Loop the video
         paused={!isPlaying}
-        onError={error => console.log('Video Error:')}
-        onLoad={() => console.log('Video loaded successfully')}
-        onBuffer={buffer => console.log('Video buffering:')}
         playInBackground={false}
         playWhenInactive={false}
       />
@@ -361,7 +313,7 @@ const styles = StyleSheet.create({
 
   loadingText: {
     color: '#ffffff',
-    fontSize: 18,
+    fontSize: 18 * scale,
     fontWeight: '500',
   },
 
@@ -379,7 +331,6 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontWeight: '600',
     fontSize: 12 * scale,
-    // marginBottom: 15,
     textAlign: 'center',
   },
 
@@ -432,7 +383,7 @@ const styles = StyleSheet.create({
   },
   optionsRow: {
     flexDirection: 'row',
-    flexWrap: 'wrap', // ✅ buttons will wrap instead of overflowing
+    flexWrap: 'wrap',
     justifyContent: 'center',
     // marginTop: 10,
   },
@@ -449,7 +400,7 @@ const styles = StyleSheet.create({
 
   circleText: {
     fontWeight: 'bold',
-    fontSize: 40 * 0.35,
+    fontSize: 40 * 0.35 * scale,
     color: '#5D4A99',
     includeFontPadding: false,
   },
