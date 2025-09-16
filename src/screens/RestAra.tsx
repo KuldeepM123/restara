@@ -49,19 +49,19 @@ const RestAraApp = () => {
   } = useSoundMixer();
 
   // Master toggle effect - controls all sounds
-  useEffect(() => {
-    if (masterEnabled) {
-      // If any sounds have volume > 0, start playing them
-      if (Object.values(volumes).some(vol => vol > 0)) {
-        togglePlayAll();
-      }
-    } else {
-      // Stop all sounds when master is disabled
-      if (isPlaying) {
-        togglePlayAll();
-      }
-    }
-  }, [masterEnabled]);
+  // useEffect(() => {
+  //   if (masterEnabled) {
+  //     // If any sounds have volume > 0, start playing them
+  //     if (Object.values(volumes).some(vol => vol > 0)) {
+  //       togglePlayAll();
+  //     }
+  //   } else {
+  //     // Stop all sounds when master is disabled
+  //     if (isPlaying) {
+  //       togglePlayAll();
+  //     }
+  //   }
+  // }, [masterEnabled]);
 
   // useEffect(() => {
   //   const hasActiveSounds = Object.values(volumes).some(vol => vol > 0);
