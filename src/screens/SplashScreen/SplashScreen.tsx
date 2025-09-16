@@ -60,8 +60,9 @@ const SplashScreen = () => {
 
   return (
     <View style={styles.container}>
-      <Logo style={[styles.logo, { marginTop: height * 0.06 }]} />
-
+      <View style={styles.logoContainer}>
+        <Logo style={[styles.logo, { marginTop: height * 0.06 }]} />
+      </View>
       <View style={styles.centerWrapper}>
         <View style={styles.mandalaWrapper}>
           <Animated.View style={{ transform: [{ rotate: spin }] }}>
@@ -94,6 +95,10 @@ const styles = StyleSheet.create({
     height: '100%',
     flex: 1,
     backgroundColor: '#5b4d8c',
+    overflow: 'visible',
+  },
+  logoContainer: {
+    marginHorizontal: 2,
   },
   logo: {
     alignSelf: 'center',

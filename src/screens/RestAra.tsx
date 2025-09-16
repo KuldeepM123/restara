@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   View,
   Text,
@@ -48,21 +48,6 @@ const RestAraApp = () => {
     resetMixer,
     isLoading,
   } = useSoundMixer();
-
-  // Master toggle effect - controls all sounds
-  // useEffect(() => {
-  //   if (masterEnabled) {
-  //     // If any sounds have volume > 0, start playing them
-  //     if (Object.values(volumes).some(vol => vol > 0)) {
-  //       togglePlayAll();
-  //     }
-  //   } else {
-  //     // Stop all sounds when master is disabled
-  //     if (isPlaying) {
-  //       togglePlayAll();
-  //     }
-  //   }
-  // }, [masterEnabled]);
 
   // useEffect(() => {
   //   const hasActiveSounds = Object.values(volumes).some(vol => vol > 0);
@@ -127,7 +112,6 @@ const RestAraApp = () => {
     setVolume(soundId, volume);
     if (volume > 0) {
       setMasterEnabled(true);
-      // isPlaying(true)
     }
   };
 
@@ -141,7 +125,6 @@ const RestAraApp = () => {
   const handleResetAll = () => {
     resetMixer();
     resetTimer();
-    // resetSlider();
     setMasterEnabled(false);
   };
 
@@ -295,11 +278,6 @@ const styles = StyleSheet.create({
     width: '90%',
   },
   iconContainer: {
-    // backgroundColor: 'red',
-    // width: '10%',
-    // justifyContent: 'center',
-    // borderLeftColor: 'grey',
-    // borderLeftWidth: 2,
     backgroundColor: 'white',
     alignItems: 'center',
     justifyContent: 'center',
@@ -369,23 +347,17 @@ const styles = StyleSheet.create({
     borderRadius: 9,
     marginBottom: 20,
     overflow: 'hidden',
-    // alignItems: 'center',
-    // justifyContent: 'center',
-    // backgroundColor: '#5D4A99',
-    // maxWidth: 350,
   },
   countdownRow: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     alignItems: 'center',
     justifyContent: 'space-between',
-    // width: '100%',
   },
   optionsRow: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'center',
-    // marginTop: 10,
   },
 
   circleButton: {
@@ -409,15 +381,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    // marginBottom: 20,
   },
 
   timeBlock: {
     alignItems: 'center',
-    // backgroundColor: 'red',
     paddingHorizontal: 10,
-    // justifyContent: 'space-between',
-    // minWidth: 60,
   },
 
   timeText: {
@@ -442,15 +410,12 @@ const styles = StyleSheet.create({
   },
 
   controls: {
-    // backgroundColor: 'red',
     flexDirection: 'row',
     gap: 10,
     justifyContent: 'center',
   },
 
   controlButton: {
-    // paddingHorizontal: 20,
-    // paddingVertical: 10,
     backgroundColor: 'rgba(255, 255, 255, 0.2)',
     borderRadius: 20,
     borderWidth: 1,
@@ -494,7 +459,6 @@ const styles = StyleSheet.create({
   },
 
   soundIcon: {
-    // flexDirection: 'row',
     width: 30,
     height: 30,
   },
@@ -513,20 +477,12 @@ const styles = StyleSheet.create({
   },
   soundContainer: {
     flexDirection: 'row',
-
-    // flex: 1,
-    // alignItems: 'center',
-    // justifyContent: 'space-between',
-    // backgroundColor: 'red',
-    // width: '100%',
   },
 
   sliderContainer: {
     flexDirection: 'row',
     flex: 1,
     justifyContent: 'center',
-    // alignItems: 'center',
-    // paddingHorizontal: 5,
   },
 
   slider: {
@@ -549,7 +505,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     alignSelf: 'center',
-    // paddingVertical: 10,
   },
   resetButton: {
     paddingVertical: 8,
@@ -558,12 +513,6 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     width: '20%',
     alignSelf: 'center',
-    // shadowColor: '#000',
-    // shadowOffset: { width: 0, height: 2 },
-    // shadowOpacity: 0.25,
-    // shadowRadius: 3.84,
-    // elevation: 3,
-    // backgroundColor: '#6C5B99',
   },
 
   resetButtonText: {
@@ -581,7 +530,6 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     alignContent: 'center',
     textAlign: 'center',
-    // marginBottom: 10,
     marginTop: 10,
   },
 });
