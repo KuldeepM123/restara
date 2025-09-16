@@ -48,6 +48,7 @@ export const SoundMixerProvider: React.FC<SoundMixerProviderProps> = ({
   const sounds = useRef<Record<string, Sound | null>>({});
   const [volumes, setVolumes] =
     useState<Record<string, number>>(INITIAL_VOLUMES);
+  const [loadedSounds, setLoadedSounds] = useState<Record<string, boolean>>({});
   const [isPlaying, setIsPlaying] = useState(false);
   const [playingStates, setPlayingStates] = useState<Record<string, boolean>>(
     {},
@@ -64,45 +65,10 @@ export const SoundMixerProvider: React.FC<SoundMixerProviderProps> = ({
     sounds: item.sound,
   }));
 
-  // Load sounds on mount
-  // useEffect(() => {
-  //   Sound.setCategory('Playback');
-
-  //   const soundFiles = [
-  //     'bell.mp3',
-  //     'bird.mp3',
-  //     'fire.mp3',
-  //     'flute.mp3',
-  //     'frog.mp3',
-  //     'ice_cracking.mp3',
-  //     'ocean.mp3',
-  //     'om.mp3',
-  //     'owl.mp3',
-  //     'rain.mp3',
-  //     'thunder.mp3',
-  //     'tibetan_bowls.mp3',
-  //     'train.mp3',
-  //     'wind_chimes.mp3',
-  //     'wind.mp3',
-  //   ];
-
-  //   soundFiles.forEach(file => {
-  //     const id = file.replace('.mp3', '').replace('_', '_');
-  //     const sound = new Sound(file, Sound.MAIN_BUNDLE, error => {
-  //       if (error) {
-  //         console.log(`Error loading ${id}:`, error);
-  //       } else {
-  //         console.log(`${id} loaded successfully`);
-  //         sounds.current[id] = sound;
-  //       }
-  //     });
-  //   });
-
-  //   setIsLoading(false);
-  // }, []);
-
   useEffect(() => {
     Sound.setCategory('Playback');
+    let loadedCount = 0;
+    const totalSound = SliderData.length;
 
     SliderData.forEach(item => {
       const sound = new Sound(item.sound, Sound.MAIN_BUNDLE, error => {
@@ -111,11 +77,14 @@ export const SoundMixerProvider: React.FC<SoundMixerProviderProps> = ({
         } else {
           console.log(`${item.id} loaded successfully`);
           sounds.current[item.id] = sound;
+          setLoadedSounds(prev => ({ ...prev, [item.id]: true }));
+        }
+        loadedCount++;
+        if (loadedCount === totalSound) {
+          setIsLoading(false);
         }
       });
     });
-
-    setIsLoading(false);
   }, []);
 
   // Set volume for a specific sound
@@ -130,37 +99,36 @@ export const SoundMixerProvider: React.FC<SoundMixerProviderProps> = ({
 
     const sound = sounds.current[soundId];
     console.log(`Sound object for ${soundId}:`, sound);
+    const isSoundLoaded = loadedSounds[soundId];
 
-    if (sound) {
-      sound.setVolume(clampedVolume);
-
+    if (sound && isSoundLoaded) {
       if (clampedVolume > 0) {
-        console.log(`Playing ${soundId}`);
+        sound.setVolume(clampedVolume);
         sound.setNumberOfLoops(-1);
+        console.log(`Playing ${soundId}`);
         sound.play(success => {
           console.log(`Play result for ${soundId}:`, success);
           if (success) {
             setPlayingStates(prev => ({ ...prev, [soundId]: true }));
+            setIsPlaying(true);
           }
         });
-        setIsPlaying(true);
       } else {
         console.log(`Stopping ${soundId}`);
         sound.stop();
+        sound.setVolume(0);
         setPlayingStates(prev => ({ ...prev, [soundId]: false }));
+        // Check if any other sound are still playing
+        const updatedVolume = { ...volumes, [soundId]: clampedVolume };
+        const stillPlaying = Object.entries(updatedVolume).some(
+          ([key, vol]) => vol > 0,
+        );
+        if (!stillPlaying) {
+          setIsPlaying(false);
+        }
       }
-    } else {
-      console.log(`No sound object found for ${soundId}`);
     }
   };
-
-  // getIconForSound
-  // const getIconForSound = (soundId: string) => {
-  //   const soundItem = soundItems.find(item => item.key === soundId);
-  //   return isPlaying ? soundItem?.gif : soundItem?.png;
-  // return soundItem?.
-  // icon || '🎵'; // Default to '🎵' if not found
-  // };
 
   // getIconForSound - Fixed version
   const getIconForSound = (soundId: string) => {

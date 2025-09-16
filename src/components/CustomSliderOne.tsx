@@ -263,8 +263,8 @@ const styles = StyleSheet.create({
     position: 'absolute',
   },
   thumb: {
-    width: 24,
-    height: 24,
+    width: 44,
+    height: 44,
     borderRadius: 12,
     position: 'absolute',
     top: -9,

@@ -30,7 +30,6 @@ const debounce = (func: Function, delay: number) => {
 
 const RestAraApp = () => {
   // Timer state
-  // const [videoPlaying, setVideoPlaying] = useState(false);
   const [timeLeft, setTimeLeft] = useState(0);
   const [isTimerRunning, setIsTimerRunning] = useState(false);
   const [hasTimerStarted, setHasTimerStarted] = useState(false);
@@ -124,34 +123,63 @@ const RestAraApp = () => {
   };
 
   //resetSlider
-  const resetSlider = useCallback(() => {
-    resetMixer(); // context reset
-    soundItems.forEach(item => setVolume(item.key, 0)); // slider reset
-  }, [soundItems, setVolume, resetMixer]);
+  // const resetSlider = useCallback(() => {
+  //   resetMixer(); // context reset
+  //   soundItems.forEach(item => setVolume(item.key, 0)); // slider reset
+  // }, [soundItems, setVolume, resetMixer]);
 
-  const handleVolumeChange = useCallback(
-    debounce((soundId: string, volume: number) => {
-      setVolume(soundId, volume);
-      if (volume > 0) {
-        setMasterEnabled(true);
-      }
-    }, 100),
-    [setVolume, setMasterEnabled],
-  );
+  // const handleVolumeChange = useCallback(
+  //   debounce((soundId: string, volume: number) => {
+  //     setVolume(soundId, volume);
+  //     if (volume > 0) {
+  //       setMasterEnabled(true);
+  //     }
+  //   }, 100),
+  //   [setVolume, setMasterEnabled],
+  // );
+
+  // const handleMasterToggle = (newValue: any) => {
+  //   setMasterEnabled(newValue);
+  //   if (!newValue) {
+  //     resetMixer(); // Reset all volumes to 0 when turning off master
+  //     if (isPlaying) {
+  //       togglePlayAll(); // Stop all sounds when turning off master
+  //     }
+  //   }
+  // };
+  const resetSlider = useCallback(() => {
+    resetMixer(); // This already resets all volumes to 0
+  }, [resetMixer]);
+
+  // const handleVolumeChange = useCallback(
+  //   debounce((soundId: string, volume: number) => {
+  //     setVolume(soundId, volume);
+  //     if (volume > 0) {
+  //       setMasterEnabled(true);
+  //     }
+  //   }, 100),
+  //   [setVolume, setMasterEnabled],
+  // );
+
+  const handleVolumeChange = (soundId: string, volume: number) => {
+    setVolume(soundId, volume);
+    if (volume > 0) {
+      setMasterEnabled(true);
+      // isPlaying(true)
+    }
+  };
 
   const handleMasterToggle = (newValue: any) => {
     setMasterEnabled(newValue);
     if (!newValue) {
-      resetMixer(); // Reset all volumes to 0 when turning off master
-      if (isPlaying) {
-        togglePlayAll(); // Stop all sounds when turning off master
-      }
+      resetMixer(); // This already stops all sounds and resets volumes
     }
   };
+
   const handleResetAll = () => {
     resetMixer();
     resetTimer();
-    resetSlider();
+    // resetSlider();
     setMasterEnabled(false);
   };
 
@@ -275,6 +303,8 @@ const RestAraApp = () => {
                   <View style={styles.sliderContainer}>
                     <CustomSlider
                       value={volumes[item.key]}
+                      trackColor="#eee"
+                      thumbColor="tomato"
                       onValueChange={volume =>
                         handleVolumeChange(item.key, volume)
                       }
@@ -316,9 +346,12 @@ const styles = StyleSheet.create({
     // backgroundColor: 'red',
     // width: '10%',
     // justifyContent: 'center',
-    borderLeftColor: 'grey',
-    borderLeftWidth: 2,
-    paddingLeft: 8,
+    // borderLeftColor: 'grey',
+    // borderLeftWidth: 2,
+    backgroundColor: 'white',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingLeft: 10,
   },
   loadingContainer: {
     flex: 1,
@@ -511,8 +544,8 @@ const styles = StyleSheet.create({
 
   soundIcon: {
     // flexDirection: 'row',
-    width: 40,
-    height: 40,
+    width: 30,
+    height: 30,
   },
 
   soundLabel: {
@@ -585,8 +618,8 @@ const styles = StyleSheet.create({
   resetButtonText: {
     backgroundColor: '#635E94',
     fontFamily: 'Poppin-Regular',
-    paddingHorizontal: 20,
-    paddingVertical: 5,
+    paddingHorizontal: 15,
+    paddingVertical: 3,
     borderWidth: 2,
     borderColor: '#D3D3D3',
     borderRadius: 25,

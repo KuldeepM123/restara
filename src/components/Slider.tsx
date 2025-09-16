@@ -6,10 +6,19 @@ interface SliderProps {
   label?: string;
   icon?: ReactNode;
   value?: number;
+  trackColor?: string;
+  thumbColor?: string;
   onValueChange: (value: number) => void;
 }
 
-const CustomSlider = ({ label, icon, value, onValueChange }: SliderProps) => {
+const CustomSlider = ({
+  label,
+  icon,
+  value,
+  trackColor = '#635E94',
+  thumbColor = '#635E94',
+  onValueChange,
+}: SliderProps) => {
   return (
     <View style={styles.container}>
       <View style={styles.sliderWrapper}>
@@ -19,8 +28,9 @@ const CustomSlider = ({ label, icon, value, onValueChange }: SliderProps) => {
           value={value || 0}
           minimumValue={0}
           maximumValue={1}
-          minimumTrackTintColor={'#635E94'}
-          maximumTrackTintColor={'#635E94'}
+          minimumTrackTintColor={trackColor}
+          maximumTrackTintColor={trackColor}
+          thumbTintColor={thumbColor}
 
           // thumbStyle={styles.thumb}
           // trackStyle={styles.track}
