@@ -1,5 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { Text, TouchableOpacity, StyleSheet, Animated } from 'react-native';
+import {
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  Animated,
+  Dimensions,
+} from 'react-native';
+
+const { width } = Dimensions.get('screen');
+const scale = width / 375;
 
 interface CustomToggleSwitchProps {
   value: boolean; // current state (on/off)
@@ -50,7 +59,7 @@ const CustomToggleSwitch = ({ value, onToggle }: CustomToggleSwitchProps) => {
           styles.knob,
           {
             transform: [{ translateX }],
-            backgroundColor: value ? 'green' : 'red',
+            backgroundColor: value ? '#00C853' : '#FF0000',
           },
         ]}
       />
@@ -76,7 +85,7 @@ const styles = StyleSheet.create({
   },
   label: {
     position: 'absolute',
-    fontSize: 12,
+    fontSize: 12 * scale,
     fontWeight: 'bold',
   },
 });

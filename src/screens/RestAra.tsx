@@ -358,6 +358,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'center',
+    padding: 4,
   },
 
   circleButton: {
@@ -392,7 +393,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppin-Regular',
     color: '#fff',
     fontSize: 20 * scale,
-    fontWeight: 'bold',
+    fontWeight: 700,
   },
 
   subText: {
