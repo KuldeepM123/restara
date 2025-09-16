@@ -123,45 +123,6 @@ const RestAraApp = () => {
     setHasTimerStarted(false);
   };
 
-  //resetSlider
-  // const resetSlider = useCallback(() => {
-  //   resetMixer(); // context reset
-  //   soundItems.forEach(item => setVolume(item.key, 0)); // slider reset
-  // }, [soundItems, setVolume, resetMixer]);
-
-  // const handleVolumeChange = useCallback(
-  //   debounce((soundId: string, volume: number) => {
-  //     setVolume(soundId, volume);
-  //     if (volume > 0) {
-  //       setMasterEnabled(true);
-  //     }
-  //   }, 100),
-  //   [setVolume, setMasterEnabled],
-  // );
-
-  // const handleMasterToggle = (newValue: any) => {
-  //   setMasterEnabled(newValue);
-  //   if (!newValue) {
-  //     resetMixer(); // Reset all volumes to 0 when turning off master
-  //     if (isPlaying) {
-  //       togglePlayAll(); // Stop all sounds when turning off master
-  //     }
-  //   }
-  // };
-  const resetSlider = useCallback(() => {
-    resetMixer(); // This already resets all volumes to 0
-  }, [resetMixer]);
-
-  // const handleVolumeChange = useCallback(
-  //   debounce((soundId: string, volume: number) => {
-  //     setVolume(soundId, volume);
-  //     if (volume > 0) {
-  //       setMasterEnabled(true);
-  //     }
-  //   }, 100),
-  //   [setVolume, setMasterEnabled],
-  // );
-
   const handleVolumeChange = (soundId: string, volume: number) => {
     setVolume(soundId, volume);
     if (volume > 0) {
@@ -199,13 +160,6 @@ const RestAraApp = () => {
   return (
     <View style={styles.container}>
       <StatusBar backgroundColor={'#5D4A99'} barStyle={'light-content'} />
-      {/* <Video
-        source={require('../assets/videos/background_animation_1.mp4')} // your video url
-        style={StyleSheet.absoluteFill} // makes it cover the whole screen
-        resizeMode="cover"
-        muted
-        paused={!isPlaying}
-      /> */}
       {/* // Add these props to your Video component: */}
       <Video
         source={require('../assets/videos/background_animation_1.mp4')}
@@ -214,9 +168,6 @@ const RestAraApp = () => {
         muted
         repeat={true} // Loop the video
         paused={!isPlaying}
-        onError={error => console.log('Video Error:')}
-        onLoad={() => console.log('Video loaded successfully')}
-        onBuffer={buffer => console.log('Video buffering:')}
         playInBackground={false}
         playWhenInactive={false}
       />
